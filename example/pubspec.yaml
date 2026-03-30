@@ -1,0 +1,17 @@
+name: getseto_kyc_example
+description: Minimal example app demonstrating GetSetO KYC SDK integration.
+publish_to: none
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  getseto_sdk:
+    path: ../../packages/getseto_sdk  # replace with git reference in your own project
+
+flutter:
+  uses-material-design: true
