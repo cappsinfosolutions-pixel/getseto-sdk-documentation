@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(title: 'My Broker App', home: HomeScreen());
+    return const MaterialApp(title: 'My Main App', home: HomeScreen());
   }
 }
 
@@ -22,9 +22,9 @@ class HomeScreen extends StatelessWidget {
         // Switch to KycEnvironment.production for live builds.
         environment: KycEnvironment.uat,
         apiKey: 'YOUR_API_KEY',
-        tenantName: 'Your Brand Name',
+        tenantName: 'My Company',
         // Use AssetImage, NetworkImage, or MemoryImage for your logo.
-        logo: NetworkImage('https://example.com/logo.png'),
+        logo: AssetImage('assets/images/logo.jpg'),
         locale: 'en',
         theme: GetsetoKycTheme(
           brightness: Brightness.light,
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('My Broker App')),
+      appBar: AppBar(title: const Text('My Main App')),
       body: Center(
         child: ElevatedButton(onPressed: () => _startKyc(context), child: const Text('Start KYC')),
       ),

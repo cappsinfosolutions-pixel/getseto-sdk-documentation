@@ -13,5 +13,13 @@ dependencies:
   getseto_sdk:
     path: ../../packages/getseto_sdk  # replace with git reference in your own project
 
+#  git:
+#    url: https://github.com/cappsinfosolutions-pixel/getseto-sdk.git
+#    path: packages/getseto_sdk
+#    ref: v0.1.0
+
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/logo.jpg
