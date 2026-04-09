@@ -47,6 +47,7 @@ await GetsetoKyc.launch(
 * 👉 Full Integration Guide: `docs/flutter-integration.md`
 * 🎨 Theming Guide: `docs/theming.md`
 * 🛠 Troubleshooting: `docs/troubleshooting.md`
+* 🔌 GetSetO API: `docs/getseto-api.md`
 
 ---
 
