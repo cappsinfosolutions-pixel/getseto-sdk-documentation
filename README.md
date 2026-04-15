@@ -1,10 +1,10 @@
 # GetSetO KYC SDK (Flutter)
 
-The GetSetO KYC SDK provides a full-screen, self-contained eKYC onboarding journey that you embed into your existing Flutter app with a single method call. The SDK manages its own screens and navigation internally â€” you only need to supply your API credentials, a logo, and handle the result when the journey finishes.
+The GetSetO KYC SDK provides a full-screen, self-contained eKYC onboarding journey that you embed into your existing Flutter app with a single method call. The SDK manages its own screens and navigation internally — you only need to supply your API credentials, a logo, and handle the result when the journey finishes.
 
 ---
 
-## ðŸš€ Quick Start
+## 🚀 Quick Start
 
 ### 1. Add dependency
 
@@ -41,22 +41,22 @@ await GetsetoKyc.launch(
 
 ---
 
-## ðŸ“š Documentation
+## 📚 Documentation
 
-* ðŸ‘‰ Full Integration Guide: `docs/flutter-integration.md`
-* ðŸŽ¨ Theming Guide: `docs/theming.md`
-* ðŸ›  Troubleshooting: `docs/troubleshooting.md`
-* ðŸ”Œ GetSetO API: `docs/getseto-api.md`
+* 👉 Full Integration Guide: `docs/flutter-integration.md`
+* 🎨 Theming Guide: `docs/theming.md`
+* 🛠 Troubleshooting: `docs/troubleshooting.md`
+* 🔌 GetSetO API: `docs/getseto-api.md`
 
 ---
 
-## ðŸ§ª Example App
+## 🧪 Example App
 
 Check the `example/` folder for a developer demo app.
 
 ---
 
-## ðŸ§  How it works
+## 🧠 How it works
 
 * SDK runs as a full-screen flow
 * Navigation is handled internally
@@ -67,7 +67,7 @@ Check the `example/` folder for a developer demo app.
 
 ---
 
-## ðŸ“¦ Versioning
+## 📦 Versioning
 
 Current version: **1.0.2**
 
@@ -75,12 +75,12 @@ Current version: **1.0.2**
 
 ---
 
-## ðŸ” Security Note
+## 🔐 Security Note
 
 Do not expose your API key in public repositories.
 
 ---
 
-## ðŸ“ž Support
+## 📞 Support
 
 For integration support, contact GetSetO team.

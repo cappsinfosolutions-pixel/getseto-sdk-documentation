@@ -1,7 +1,7 @@
-# GetSetO KYC SDK â€” Flutter Integration Guide
+# GetSetO KYC SDK — Flutter Integration Guide
 
 > **Version:** 1.0.2
-> **Flutter SDK requirement:** â‰¥ 3.10.1
+> **Flutter SDK requirement:** ≥ 3.10.1
 
 ---
 
@@ -21,7 +21,7 @@ Embed a complete eKYC journey into your Flutter app with a single method call.
 
 ---
 
-## Step 1 â€” Add the dependency
+## Step 1 — Add the dependency
 
 The SDK is distributed as a private Flutter package. Add it to your app's `pubspec.yaml`:
 
@@ -44,7 +44,7 @@ flutter pub get
 
 ---
 
-## Step 2 â€” Android setup
+## Step 2 — Android setup
 
 ### 2.1 Permissions
 
@@ -54,14 +54,14 @@ Add the following permissions to `android/app/src/main/AndroidManifest.xml` insi
 <!-- Network access for API calls -->
 <uses-permission android:name="android.permission.INTERNET" />
 
-<!-- Camera â€” required for document capture and live photo -->
+<!-- Camera — required for document capture and live photo -->
 <uses-permission android:name="android.permission.CAMERA" />
 
-<!-- Microphone and audio â€” required for In-Person Verification (IPV) -->
+<!-- Microphone and audio — required for In-Person Verification (IPV) -->
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
 <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
-<!-- Location â€” required for In-Person Verification (IPV) -->
+<!-- Location — required for In-Person Verification (IPV) -->
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 ```
@@ -119,7 +119,7 @@ buildscript {
 
 ---
 
-## Step 3 â€” iOS setup
+## Step 3 — iOS setup
 
 ### 3.1 Minimum deployment target
 
@@ -155,7 +155,7 @@ cd ios && pod install && cd ..
 
 ---
 
-## Step 4 â€” Launch the KYC journey
+## Step 4 — Launch the KYC journey
 
 Import the SDK in the file where you want to trigger the KYC flow:
 
@@ -253,10 +253,10 @@ A fully working reference app is included alongside this guide:
 
 ```
 example/
-â”œâ”€â”€ lib/main.dart            â† complete integration code
-â”œâ”€â”€ android/                 â† Android platform config with all required permissions
-â”œâ”€â”€ ios/                     â† iOS platform config with all required permissions
-â””â”€â”€ pubspec.yaml             â† dependency setup
+├── lib/main.dart            ← complete integration code
+├── android/                 ← Android platform config with all required permissions
+├── ios/                     ← iOS platform config with all required permissions
+└── pubspec.yaml             ← dependency setup
 ```
 
 Open `example/lib/main.dart` to see the complete integration in one file. The app uses a dummy API key and will not connect to the backend, but it compiles and serves as a copy-paste starting point.
