@@ -11,12 +11,10 @@ dependencies:
     sdk: flutter
 
   getseto_sdk:
-    path: ../../packages/getseto_sdk  # replace with git reference in your own project
-
-#  git:
-#    url: https://github.com/cappsinfosolutions-pixel/getseto-sdk.git
-#    path: packages/getseto_sdk
-#    ref: v0.1.0
+    git:
+      url: https://github.com/getseto-com/getseto-sdk.git
+      path: packages/getseto_sdk
+      ref: v1.0.0
 
 flutter:
   uses-material-design: true

@@ -32,9 +32,9 @@ dependencies:
 
   getseto_sdk:
     git:
-      url: https://github.com/cappsinfosolutions-pixel/getseto-sdk.git
+      url: https://github.com/getseto-com/getseto-sdk.git
       path: packages/getseto_sdk
-      ref: v0.1.0   # pin to a specific release tag
+      ref: v1.0.0   # pin to a specific release tag
 ```
 
 Then fetch the package:
@@ -201,7 +201,7 @@ The SDK presents a full-screen modal over your app. When the user completes or e
 | `environment` * | `KycEnvironment` | Deployment environment. Use `uat` for testing, `production` for live builds. |
 | `apiKey` * | `String` | Your tenant API key provided by GetSetO. Must not be empty. |
 | `tenantName` * | `String` | Your brand display name. Must not be empty. |
-| `logo` * | `ImageProvider` | Your brand logo shown in the SDK header. Accepts `AssetImage`, `NetworkImage`, or `MemoryImage`. |
+| `logo` * | `ImageProvider` | Your brand logo shown in the SDK header. Accepts `AssetImage`, `NetworkImage`, or `MemoryImage`. Recommended size W 200px x H 50px|
 | `theme` | `GetsetoKycTheme?` | Optional branding configuration. Defaults to the SDK's built-in theme when omitted. |
 | `locale` | `String` | BCP 47 language tag (e.g., `'en'`, `'hi'`, `'gu'`). Defaults to `'en'`. |
 | `googleSignInClientId` | `String?` | Your Google OAuth 2.0 web client ID. Required only if Google Sign-In is enabled for your tenant. |

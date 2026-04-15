@@ -11,9 +11,9 @@ The GetSetO KYC SDK provides a full-screen, self-contained eKYC onboarding journ
 ```yaml
 getseto_sdk:
   git:
-    url: https://github.com/cappsinfosolutions-pixel/getseto-sdk.git
+    url: https://github.com/getseto-com/getseto-sdk.git
     path: packages/getseto_sdk
-    ref: v0.1.0
+    ref: v1.0.0
 ```
 
 ---
