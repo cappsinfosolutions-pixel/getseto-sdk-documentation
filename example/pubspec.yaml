@@ -13,8 +13,7 @@ dependencies:
   getseto_sdk:
     git:
       url: https://github.com/getseto-com/getseto-sdk.git
-      path: packages/getseto_sdk
-      ref: v1.0.0
+      ref: v1.0.2
 
 flutter:
   uses-material-design: true

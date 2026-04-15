@@ -1,10 +1,10 @@
 # GetSetO KYC SDK (Flutter)
 
-The GetSetO KYC SDK provides a full-screen, self-contained eKYC onboarding journey that you embed into your existing Flutter app with a single method call. The SDK manages its own screens and navigation internally — you only need to supply your API credentials, a logo, and handle the result when the journey finishes.
+The GetSetO KYC SDK provides a full-screen, self-contained eKYC onboarding journey that you embed into your existing Flutter app with a single method call. The SDK manages its own screens and navigation internally â€” you only need to supply your API credentials, a logo, and handle the result when the journey finishes.
 
 ---
 
-## 🚀 Quick Start
+## ðŸš€ Quick Start
 
 ### 1. Add dependency
 
@@ -12,8 +12,7 @@ The GetSetO KYC SDK provides a full-screen, self-contained eKYC onboarding journ
 getseto_sdk:
   git:
     url: https://github.com/getseto-com/getseto-sdk.git
-    path: packages/getseto_sdk
-    ref: v1.0.0
+    ref: v1.0.2
 ```
 
 ---
@@ -42,22 +41,22 @@ await GetsetoKyc.launch(
 
 ---
 
-## 📚 Documentation
+## ðŸ“š Documentation
 
-* 👉 Full Integration Guide: `docs/flutter-integration.md`
-* 🎨 Theming Guide: `docs/theming.md`
-* 🛠 Troubleshooting: `docs/troubleshooting.md`
-* 🔌 GetSetO API: `docs/getseto-api.md`
+* ðŸ‘‰ Full Integration Guide: `docs/flutter-integration.md`
+* ðŸŽ¨ Theming Guide: `docs/theming.md`
+* ðŸ›  Troubleshooting: `docs/troubleshooting.md`
+* ðŸ”Œ GetSetO API: `docs/getseto-api.md`
 
 ---
 
-## 🧪 Example App
+## ðŸ§ª Example App
 
 Check the `example/` folder for a developer demo app.
 
 ---
 
-## 🧠 How it works
+## ðŸ§  How it works
 
 * SDK runs as a full-screen flow
 * Navigation is handled internally
@@ -68,20 +67,20 @@ Check the `example/` folder for a developer demo app.
 
 ---
 
-## 📦 Versioning
+## ðŸ“¦ Versioning
 
-Current version: **0.1.0**
+Current version: **1.0.2**
 
 > 0.x versions are development releases and may include breaking changes.
 
 ---
 
-## 🔐 Security Note
+## ðŸ” Security Note
 
 Do not expose your API key in public repositories.
 
 ---
 
-## 📞 Support
+## ðŸ“ž Support
 
 For integration support, contact GetSetO team.
