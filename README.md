@@ -12,7 +12,7 @@ The GetSetO KYC SDK provides a full-screen, self-contained eKYC onboarding journ
 getseto_sdk:
   git:
     url: https://github.com/getseto-com/getseto-sdk.git
-    ref: v1.0.2
+    ref: v1.0.3
 ```
 
 ---
@@ -69,7 +69,7 @@ Check the `example/` folder for a developer demo app.
 
 ## 📦 Versioning
 
-Current version: **1.0.2**
+Current version: **1.0.3**
 
 > 0.x versions are development releases and may include breaking changes.
 
