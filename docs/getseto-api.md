@@ -66,7 +66,7 @@ The API uses a symmetric **AES-CBC / PKCS7** scheme. Both the request body you s
 
 ```json
 {
-  "Data": "12345" 
+  "Data": "12345"
 }
 ```
 "12345" is the **Application ID as a string**.
@@ -116,15 +116,15 @@ The API uses a symmetric **AES-CBC / PKCS7** scheme. Both the request body you s
 
 | Value | Meaning |
 |---|---|
-| `Pending` | Application submitted; awaiting review. |
-| `ReviewPending` | Documents uploaded; assigned for manual review. |
+| `Pending` | Application not yet completed; awaiting user to complete all steps. |
+| `ReviewPending` | Application submitted; awaiting verifier review. |
 | `Assigned` | Application assigned to a verifier. |
-| `OnHold` | Application is on hold for additional information. |
-| `Approved` | KYC approved successfully. |
-| `ApprovedBoPending` | KYC approved; back-office processing is pending. |
-| `ApprovedCancelled` | KYC was approved but subsequently cancelled. |
-| `Rejected` | KYC rejected; applicant must re-apply. |
-| `SystemRejected` | Rejected automatically by the system (e.g. duplicate records). |
+| `OnHold` | Application is on hold by verifier. |
+| `Approved` | Application approved successfully. |
+| `ApprovedBoPending` | Application approved; back-office processing is pending. |
+| `ApprovedCancelled` | Application was approved but subsequently cancelled. |
+| `Rejected` | Application rejected; applicant must re-submit after clearing all issues raised by verifier. |
+| `SystemRejected` | Application rejected by the back-office system. |
 | `Cancelled` | Application was cancelled. |
 
 ---
@@ -220,7 +220,7 @@ public record ApplicationStatusResult(string ApplicationStatus, string LastStage
 var client = new GetSetoApiClient(
     tenantApiKey: "YOUR_TENANT_API_KEY",
     secretKey: "YOUR_32_CHAR_SECRET_KEY_________",
-    baseUrl: "https://api.getseto.com"
+    baseUrl: "API_BASE_URL_PROVIDED_TO_YOU"
 );
 
 var status = await client.GetApplicationStatusAsync(applicationId: 12345);
@@ -252,8 +252,234 @@ Console.WriteLine(status.Email);
 
 ---
 
+## Get Access Token (Server-to-Server)
+
+This endpoint lets your backend generate a short-lived access token for a specific mobile number. You pass this token to the Flutter SDK so the user can start the KYC journey **without going through the OTP login inside the SDK**.
+
+> **Think of it this way:** Normally the SDK asks the user for their mobile number and OTP by itself. With this flow, *you* handle the OTP in your own app, and once verified, you ask GetSetO for a "pass" (the access token) that lets the SDK skip its own login screens.
+
+### When should you use this?
+
+Use this endpoint when:
+
+- Your app already has its own OTP or authentication flow and you don't want to ask the user to verify their mobile a second time inside the SDK.
+- You want to keep the login experience consistent with your own app's design.
+- You want tighter control over when and how users are authenticated before starting KYC.
+
+### Important — keep your Secret Key on the server
+
+**Your Secret Key must never appear in your Flutter (client-side) app.** This call must always come from your own backend server. Your Flutter app asks *your server* for the token, and your server calls GetSetO.
+
+```
+Your Flutter App
+      │
+      │  (your own API — you design this)
+      ▼
+Your Backend Server
+      │
+      │  POST /api/tenant-api/access-token
+      │  (server-to-server, encrypted with Secret Key)
+      ▼
+GetSetO API  →  returns Access Token
+      │
+      ▼
+Your Backend Server returns the Token to your Flutter App
+      │
+      ▼
+Flutter SDK uses the Token to start the KYC journey
+```
+
+### Endpoint
+
+```
+POST /api/tenant-api/access-token
+Content-Type: application/json
+ApiKey: YOUR_TENANT_API_KEY
+```
+
+### Request
+
+Build the plain-text payload below, encrypt it with your Secret Key using the same AES-CBC method described above, and send it wrapped in `DataObject`.
+
+**Plain-text payload (before encryption):**
+
+```json
+{
+  "Mobile": "9876543210",
+  "MobileRelationshipId": 1,
+  "ClientCode": "",
+  "Source": 1
+}
+```
+
+**Field reference:**
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `Mobile` | string | Yes | The user's 10-digit mobile number. Must begin with 5, 6, 7, 8, or 9. |
+| `MobileRelationshipId` | integer | Conditional | Relationship type ID (e.g. `1` for "Self"). Provided to you during tenant onboarding. Pass an empty string for source=Modification. |
+| `ClientCode` | string | Conditional | Your client code if source is Modification. Pass an empty string for source=KYC. |
+| `Source` | integer | Yes | Journey type. `1` = KYC (default), `4` = Modification. See table below. |
+
+**`Source` values:**
+
+| Value | Description |
+|---|---|
+| `1` | KYC — standard new account onboarding journey (most common). |
+| `4` | Modification — update details on an existing account. |
+
+**HTTP request body:**
+
+```json
+{
+  "Data": "<AES-CBC encrypted, Base64-encoded plain-text payload>"
+}
+```
+
+### Response
+
+> Unlike the Status endpoint, the response from this endpoint is **plain JSON — not encrypted**. Read it directly without decrypting.
+
+**HTTP response body:**
+
+```json
+{
+  "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "Mobile": "9876543210",
+  "MobileRelationshipId": 1,
+  "ClientCode": "",
+  "Source": 1,
+  "AppExists": true
+}
+```
+
+**Response fields:**
+
+| Field | Type | Description |
+|---|---|---|
+| `Token` | string | The JWT access token. Pass this to the Flutter SDK. |
+| `AppExists` | boolean | `true` = a KYC application already exists for this mobile number (the SDK will **resume** it). `false` = no existing application (the SDK will **start a fresh** journey). |
+| `Mobile` | string | The mobile number you sent (echoed back for confirmation). |
+| `MobileRelationshipId` | integer | The relationship ID you sent (echoed back). |
+| `ClientCode` | string | The client code you sent (echoed back). |
+| `Source` | integer | The source you sent (echoed back). |
+
+> You do not need to handle `AppExists` differently in Flutter — the SDK takes care of resume vs. new journey automatically based on the token.
+
+### C\# example
+
+This example extends the same `GetSetoApiClient` class shown in the Status section above. The `AesEncrypt` helper is the same one defined there.
+
+```csharp
+/// <summary>
+/// Calls GetSetO server-to-server to generate an access token for a verified mobile number.
+/// Call this ONLY from your backend after your own OTP verification is complete.
+/// </summary>
+public async Task<AccessTokenResponse> GetAccessTokenAsync(string mobile, int mobileRelationshipId)
+{
+    // 1. Build the plain-text payload
+    var innerPayload = JsonSerializer.Serialize(new
+    {
+        Mobile = mobile,
+        MobileRelationshipId = mobileRelationshipId,
+        ClientCode = "",  // pass your client code here if your workflow requires it
+        Source = 1        // 1 = KYC journey
+    });
+
+    // 2. Encrypt the payload (same AesEncrypt helper as the Status endpoint)
+    var encryptedData = AesEncrypt(innerPayload);
+
+    // 3. POST to GetSetO
+    var response = await _httpClient.PostAsJsonAsync(
+        "/api/tenant-api/access-token",
+        new { Data = encryptedData }
+    );
+    response.EnsureSuccessStatusCode();
+
+    // 4. The response is plain JSON — no decryption needed
+    var result = await response.Content.ReadFromJsonAsync<AccessTokenResponse>();
+    return result!;
+}
+
+// Response model
+public record AccessTokenResponse(
+    string Token,
+    bool AppExists,
+    string Mobile,
+    int MobileRelationshipId,
+    string ClientCode,
+    int Source
+);
+```
+
+**Usage — your backend controller:**
+
+```csharp
+// Your backend exposes this endpoint to your Flutter app.
+// It verifies the OTP first, then fetches the GetSetO token.
+[HttpPost("/api/kyc/access-token")]
+public async Task<IActionResult> GetKycAccessToken([FromBody] KycTokenRequest request)
+{
+    // 1. Verify OTP using your own system (not shown here)
+    var otpValid = await _otpService.VerifyAsync(request.Mobile, request.Otp);
+    if (!otpValid)
+        return Unauthorized("Invalid OTP");
+
+    // 2. Fetch the GetSetO access token
+    var tokenData = await _getSetoClient.GetAccessTokenAsync(
+        mobile: request.Mobile,
+        mobileRelationshipId: request.MobileRelationshipId
+    );
+
+    // 3. Return only what the Flutter app needs
+    return Ok(new
+    {
+        token = tokenData.Token,
+        mobile = tokenData.Mobile,
+        mobileRelationshipId = tokenData.MobileRelationshipId,
+        source = tokenData.Source,
+        appExists = tokenData.AppExists  // useful if you want to show "resuming..." in your UI
+    });
+}
+```
+
+> **Never return your Secret Key or raw GetSetO API credentials to the Flutter app.** Return only the `Token` and the fields your app needs.
+
+### Error responses
+
+Every error from this endpoint (and all GetSetO API endpoints) returns the same JSON body shape, regardless of HTTP status:
+
+```json
+{
+  "Message": "A human-readable description of what went wrong.",
+  "ErrorCode": 50002,
+  "ErrorState": 0
+}
+```
+
+| HTTP Status | `ErrorCode` | When it happens |
+|---|---|---|
+| `401 Unauthorized` | `50009` | `ApiKey` header is missing, incorrect, or the tenant account is deactivated. |
+| `422 Unprocessable Entity` | `50001` | `Mobile` field is missing or has an invalid format. Must be 10 digits and begin with 5, 6, 7, 8, or 9. |
+| `422 Unprocessable Entity` | `50002` | `MobileRelationshipId` is missing or is `0`. |
+| `400 Bad Request` | `50003` | A KYC application already exists for this mobile number but under a **different** `MobileRelationshipId`. The `Message` field includes the existing application number and relationship name. |
+| `500 Internal Server Error` | `50006`–`50012` | Unexpected server-side error. Contact GetSetO support. |
+
+> **`ErrorState`** is an internal byte used by GetSetO support to pinpoint exactly which check failed within an error code. You do not need to act on it — use `ErrorCode` to identify the type of error.
+
+---
+
+## Security notes
+
+- Store your **Secret Key** in a secure secrets manager (e.g. AWS Secrets Manager, Azure Key Vault). Never hard-code it or commit it to source control.
+- Call this API only from your **server-side backend**. Never call it directly from the Flutter app — doing so would expose your Secret Key to end users.
+- Rotate your Secret Key periodically and update your backend configuration accordingly.
+
+---
+
 ## See also
 
 - [Flutter Integration Guide](flutter-integration.md) — how to launch the SDK and receive the `applicationId`
+- [Flutter Integration Guide — Advanced Login](flutter-integration.md#advanced-access-token-login) — how to use the access token to skip the SDK's OTP screens
 - [Theming Guide](theming.md) — customise the SDK appearance
 - [Troubleshooting](troubleshooting.md) — common issues and fixes

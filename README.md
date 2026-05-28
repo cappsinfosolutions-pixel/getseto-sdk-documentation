@@ -12,7 +12,7 @@ The GetSetO KYC SDK provides a full-screen, self-contained eKYC onboarding journ
 getseto_sdk:
   git:
     url: https://github.com/getseto-com/getseto-sdk.git
-    ref: v1.0.3
+    ref: v1.1.0
 ```
 
 ---
@@ -67,9 +67,23 @@ Check the `example/` folder for a developer demo app.
 
 ---
 
+## 🔑 Two ways to start the KYC journey
+
+**Option 1 — SDK handles login (default)**
+
+The SDK shows its own mobile number entry and OTP verification screens. No extra work required.
+
+**Option 2 — Your app handles login (advanced)**
+
+Your app verifies the user via your own OTP flow, your backend fetches an access token from GetSetO server-to-server, and you pass it to the SDK. The SDK skips its own login screens and goes straight to the KYC steps.
+
+See the [Advanced Integration section](docs/flutter-integration.md#advanced-access-token-login) for step-by-step instructions.
+
+---
+
 ## 📦 Versioning
 
-Current version: **1.0.3**
+Current version: **1.1.0**
 
 > 0.x versions are development releases and may include breaking changes.
 
