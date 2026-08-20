@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.0 - 2026-08-20
+- Documentation synced with SDK v1.2.0
+
+
 ## v1.1.0 - 2026-05-28
 - Documentation synced with SDK v1.1.0
 

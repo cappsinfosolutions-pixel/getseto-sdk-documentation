@@ -12,7 +12,7 @@ The GetSetO KYC SDK provides a full-screen, self-contained eKYC onboarding journ
 getseto_sdk:
   git:
     url: https://github.com/getseto-com/getseto-sdk.git
-    ref: v1.1.0
+    ref: v1.2.0
 ```
 
 ---
@@ -83,7 +83,7 @@ See the [Advanced Integration section](docs/flutter-integration.md#advanced-acce
 
 ## 📦 Versioning
 
-Current version: **1.1.0**
+Current version: **1.2.0**
 
 > 0.x versions are development releases and may include breaking changes.
 

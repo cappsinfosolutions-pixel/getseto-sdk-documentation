@@ -1,6 +1,6 @@
 # GetSetO KYC SDK — Flutter Integration Guide
 
-> **Version:** 1.1.0
+> **Version:** 1.2.0
 > **Flutter SDK requirement:** ≥ 3.10.1
 
 ---
@@ -33,7 +33,7 @@ dependencies:
   getseto_sdk:
     git:
       url: https://github.com/getseto-com/getseto-sdk.git
-      ref: v1.1.0   # pin to a specific release tag
+      ref: v1.2.0   # pin to a specific release tag
 ```
 
 Then fetch the package:
